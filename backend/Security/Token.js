@@ -7,8 +7,12 @@ export function AssignToken( res , payload ) {
 }
 
 export function ValidateToken( req ){
-    const token = req.cookies.token
-    const verify = jwt.verify( token , SecretKey )
-    if( !verify ) return "error"
-    return "success"
+    try {
+        const token = req.cookies.token
+        jwt.verify( token , SecretKey )
+        return "success"
+    } catch (error) {
+        console.log(error) 
+        return "error"
+    }
 }
