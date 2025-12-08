@@ -14,7 +14,8 @@ const schema = new Schema({
         required : true
     },
     downloded : {
-        type : Boolean
+        type : Boolean,
+        required:true
     },
 })
 
