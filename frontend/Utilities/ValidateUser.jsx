@@ -17,7 +17,7 @@ export default async function ValidateUser() {
         return false;
 
     } catch (error) {
-        console.error("Validation failed:", error);
+        console.log("Validation failed:", error);
         return false;
     }
 }
