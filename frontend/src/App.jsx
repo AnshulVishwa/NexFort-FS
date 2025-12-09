@@ -67,7 +67,7 @@ function App() {
               allFiles.map( ( file , i ) => (
                 <>
                   <span>{file}</span>
-                  <button onClick={DownloadFile}>Download File 📥</button>
+                  <button onClick={() => DownloadFile(file)}>Download File 📥</button>
                 </>
               ) )
             }

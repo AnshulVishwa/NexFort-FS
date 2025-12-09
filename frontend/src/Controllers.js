@@ -39,9 +39,11 @@ export async function IsThereAnyFileForMe() {
     }
 }
 
-export async function DownloadFile() {
+export async function DownloadFile(name) {
     try {
-        const response = await axios.get(`http://localhost:5000/file/download?number=${getValues()[1]}`, {
+        const response = await axios.get(
+            `http://localhost:5000/file/download?number=${getValues()[1]}&f_name=${name}`
+            , {
             responseType: 'blob', 
             withCredentials: true 
         });
@@ -56,7 +58,7 @@ export async function DownloadFile() {
         link.href = url;
         
         // 3. Use the extracted filename
-        link.setAttribute('download', filename); 
+        link.setAttribute('download', name); 
 
         document.body.appendChild(link);
         link.click();

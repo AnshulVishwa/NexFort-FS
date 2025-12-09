@@ -48,30 +48,22 @@ export async function IsThereAnyFileForMe(req , res) {
 
 export async function DownloadFile(req, res) {
     try {
-        const { number } = req.query;
+        const { number , f_name } = req.query;
         
-        const load = await FILE_M.findOne({ sentTo: number });
+        const load = await FILE_M.findOne({ sentTo: number , file_name : f_name });
         
         if (!load) {
             return res.status(404).json({ error: "File record not found" });
         }
 
-        const filename = load.file_name; 
-        res.set('X-Filename', filename);
-    
-        // 👇 2. Also set Access-Control-Expose-Headers so frontend can see it
-        res.set('Access-Control-Expose-Headers', 'X-Filename');
-
-        // 3. Now __dirname works perfectly! 
-        // __dirname is '.../backend/Controllers', so '..' goes up to 'backend'
-        const filePath = path.join(__dirname, '..', 'uploads', filename);
+        const filePath = path.join(__dirname, '..', 'uploads', f_name);
 
         if (!fs.existsSync(filePath)) {
             console.error("File missing on disk:", filePath);
             return res.status(404).json({ error: "File missing on server" });
         }
 
-        res.download(filePath, filename, async (err) => {
+        res.download(filePath, f_name, async (err) => {
             if (err) {
                 console.error("Download Error:", err);
                 if (!res.headersSent) {
@@ -81,10 +73,10 @@ export async function DownloadFile(req, res) {
             }
 
             try {
-                console.log("filename :" ,filename);
+                console.log("filename :" ,f_name);
                 
                 const res = await FILE_M.updateOne(
-                    { file_name: `${filename}`, downloded: false }, // Filter: Find file ONLY if strictly not downloded yet
+                    { file_name: `${f_name}`, downloded: false }, // Filter: Find file ONLY if strictly not downloded yet
                     { $set: { downloded: true } }              // Update: Mark as true
                 );
                 console.log(res);
@@ -92,7 +84,7 @@ export async function DownloadFile(req, res) {
 
                 fs.unlink(filePath, (unlinkErr) => {
                     if (unlinkErr) console.error("Error deleting file:", unlinkErr);
-                    else console.log(`Deleted ${filename} 🗑️`);
+                    else console.log(`Deleted ${f_name} 🗑️`);
                 });
             } catch (cleanupError) {
                 console.error("Cleanup error:", cleanupError);
