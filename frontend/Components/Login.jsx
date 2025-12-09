@@ -36,7 +36,7 @@ function Login() {
 
     } catch (error) {
         alert("Server is offline or unreachable 🚨");
-        console.error("Login Error:", error);
+        console.log("Login Error:", error);
     } 
   }
 

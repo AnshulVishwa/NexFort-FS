@@ -4,10 +4,9 @@ const SecretKey = "AnshulVishwa2205"
 export function AssignToken( res , payload ) {
     const token = jwt.sign( payload , SecretKey )
     res.cookie("token", token, {
-        httpOnly: true, // Prevents JavaScript from reading the cookie (Security best practice)
-        secure: false,  // 👈 Set to FALSE for localhost (http). Set TRUE for production (https)
-        sameSite: 'lax', // Needed for localhost to function properly
-        maxAge: 24 * 60 * 60 * 1000 // 1 day
+        secure: true,       // 👈 MUST be true (Browsers allow this on localhost if SameSite is None)
+        sameSite: 'none',   // 👈 REQUIRED for Cross-Site (Vercel -> Localhost)
+        maxAge: 24 * 60 * 60 * 1000
     });
 }
 

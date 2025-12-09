@@ -17,7 +17,7 @@ const PORT = 5000
 
 // Middlewares
 app.use(cors({
-    origin : "https://nex-fort-fs.vercel.app" ?? "http://localhost:5173/",
+    origin : "https://nex-fort-fs.vercel.app/",
     credentials : true,
     exposedHeaders: ["X-Filename"]
 })),
